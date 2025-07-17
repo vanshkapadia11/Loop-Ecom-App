@@ -2,8 +2,18 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 // kcJj2sQ3Cmp75dM6segKmSCP
 const Navbar = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
   const navigate = useNavigate();
   const { user } = useAuth();
   const [isDark, setIsDark] = useState(() => {
@@ -45,7 +55,10 @@ const Navbar = () => {
                     >
                       cart
                     </li>
-                    <li className="uppercase text-lg text-red-500 font-semibold cursor-pointer material-symbols-rounded">
+                    <li
+                      className="uppercase text-lg text-red-500 font-semibold cursor-pointer material-symbols-rounded"
+                      onClick={handleLogout}
+                    >
                       logout
                     </li>
                   </>
